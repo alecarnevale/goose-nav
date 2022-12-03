@@ -8,10 +8,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.alecarnevale.goosenav.ui.theme.GooseNavTheme
 
 @Composable
 fun MainContent(
+  mainViewModel: MainViewModel = viewModel()
+) {
+  Body {
+    mainViewModel.start()
+  }
+}
+
+@Composable
+fun Body(
   onStartButtonClick: () -> Unit
 ) {
   GooseNavTheme {
@@ -28,8 +38,6 @@ fun MainContent(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-  GooseNavTheme {
-    MainContent({})
-  }
+fun BodyPreview() {
+  Body({})
 }
