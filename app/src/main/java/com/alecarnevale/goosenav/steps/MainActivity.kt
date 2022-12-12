@@ -3,6 +3,7 @@ package com.alecarnevale.goosenav.steps
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.alecarnevale.goosenav.Goose
@@ -31,26 +32,61 @@ class MainActivity : ComponentActivity() {
         startDestination = homeNavigationRoute
       ) {
         homeScreen(
-          navigateToNext = { navController.navigateToName() }
+          navigateToNext = { navController.navigateTo(Destination.NAME) }
         )
         nameScreen(
-          navigateToNext = { navController.navigateToColor() },
-          exit = { navController.navigateToHome() }
+          navigateToNext = { navController.navigateTo(Destination.COLOR) },
+          exit = { navController.navigateTo(Destination.HOME) }
         )
         colorScreen(
-          navigateToBack = { navController.popBackStack() },
-          navigateToNext = { navController.navigateToJumpPower() },
-          exit = { navController.navigateToHome() }
+          navigateToBack = {
+            updateJumpCounter()
+            navController.popBackStack()
+          },
+          navigateToNext = { navController.navigateTo(Destination.JUMP_POWER) },
+          exit = { navController.navigateTo(Destination.HOME) }
         )
         jumpPowerScreen(
-          navigateToBackBack = { navController.popBackStack(route = nameNavigationRoute, inclusive = false) },
-          navigateToBack = { navController.popBackStack() },
-          navigateToNext = { navController.navigateToSummary() },
-          exit = { navController.navigateToHome() }
+          navigateToBackBack = {
+            updateJumpCounter()
+            navController.popBackStack(route = nameNavigationRoute, inclusive = false)
+          },
+          navigateToBack = {
+            updateJumpCounter()
+            navController.popBackStack()
+          },
+          navigateToNext = { navController.navigateTo(Destination.SUMMARY) },
+          exit = { navController.navigateTo(Destination.HOME) }
         )
         summaryScreen()
       }
     }
+  }
+
+  private fun NavController.navigateTo(destination: Destination) {
+    return when (destination) {
+      Destination.HOME -> navigateToHome().also { clearJumpCounter() }
+      Destination.NAME -> navigateToName()
+      Destination.COLOR -> navigateToColor()
+      Destination.JUMP_POWER -> navigateToJumpPower()
+      Destination.SUMMARY -> navigateToSummary()
+    }.also { updateJumpCounter() }
+  }
+
+  private fun clearJumpCounter() {
+    jumpCounter = 0
+  }
+
+  private fun updateJumpCounter() {
+    jumpCounter += 1
+  }
+
+  private enum class Destination {
+    HOME,
+    NAME,
+    COLOR,
+    JUMP_POWER,
+    SUMMARY
   }
 
   companion object {
