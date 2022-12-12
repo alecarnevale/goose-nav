@@ -1,6 +1,5 @@
 package com.alecarnevale.goosenav.steps.name
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -16,7 +15,9 @@ import com.alecarnevale.goosenav.steps.navbuttons.NavButtons
 
 @Composable
 fun NameContent(
-  nameViewModel: NameViewModel = viewModel()
+  nameViewModel: NameViewModel = viewModel(),
+  navigateToNext: () -> Unit,
+  exit: () -> Unit
 ) {
   val viewState by nameViewModel.viewState().collectAsState()
   val onChangeName =
@@ -41,10 +42,12 @@ fun NameContent(
     onExit = onExit,
   )
 
-  val context = LocalContext.current
   LaunchedEffect(viewState.destination) {
-    // TODO
-    Toast.makeText(context, viewState.destination?.name ?: "CLEAR", Toast.LENGTH_LONG).show()
+    when (viewState.destination) {
+      Destination.NEXT -> navigateToNext()
+      Destination.EXIT -> exit()
+      null -> Unit
+    }
     if (viewState.destination != null) {
       nameViewModel.onEvent(ViewEvent.ClearDestination)
     }

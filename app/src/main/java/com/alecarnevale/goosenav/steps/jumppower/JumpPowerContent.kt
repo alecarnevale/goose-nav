@@ -13,12 +13,17 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.alecarnevale.goosenav.steps.navbuttons.NavButtons
 
 @Composable
 fun JumpPowerContent(
-  jumpViewModel: JumpPowerViewModel = viewModel()
+  jumpViewModel: JumpPowerViewModel = hiltViewModel(),
+  navigateToBackBack: () -> Unit,
+  navigateToBack: () -> Unit,
+  navigateToNext: () -> Unit,
+  exit: () -> Unit
 ) {
   val viewState by jumpViewModel.viewState().collectAsState()
   val onDoubleBack =
@@ -37,10 +42,14 @@ fun JumpPowerContent(
     onExit = onExit
   )
 
-  val context = LocalContext.current
   LaunchedEffect(viewState.destination) {
-    // TODO
-    Toast.makeText(context, viewState.destination?.name ?: "CLEAR", Toast.LENGTH_LONG).show()
+    when (viewState.destination) {
+      Destination.DOUBLE_BACK -> navigateToBackBack()
+      Destination.BACK -> navigateToBack()
+      Destination.NEXT -> navigateToNext()
+      Destination.EXIT -> exit()
+      null -> Unit
+    }
     if (viewState.destination != null) {
       jumpViewModel.onEvent(ViewEvent.ClearDestination)
     }

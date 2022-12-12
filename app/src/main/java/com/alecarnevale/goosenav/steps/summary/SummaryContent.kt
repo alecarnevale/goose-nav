@@ -10,12 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.alecarnevale.goosenav.GooseColor
 
 @Composable
 fun SummaryContent(
-  summaryViewModel: SummaryViewModel = viewModel()
+  summaryViewModel: SummaryViewModel = hiltViewModel(),
 ) {
   val viewState by summaryViewModel.viewState().collectAsState()
   val onClickName =

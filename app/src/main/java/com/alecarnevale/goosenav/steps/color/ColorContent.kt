@@ -22,7 +22,10 @@ import com.alecarnevale.goosenav.steps.navbuttons.NavButtons
 
 @Composable
 fun ColorContent(
-  colorViewModel: ColorViewModel = viewModel()
+  colorViewModel: ColorViewModel = viewModel(),
+  navigateToBack: () -> Unit,
+  navigateToNext: () -> Unit,
+  exit: () -> Unit
 ) {
   val viewState by colorViewModel.viewState().collectAsState()
   val onSelectColor =
@@ -50,10 +53,13 @@ fun ColorContent(
     onExit = onExit
   )
 
-  val context = LocalContext.current
   LaunchedEffect(viewState.destination) {
-    // TODO
-    Toast.makeText(context, viewState.destination?.name ?: "CLEAR", LENGTH_LONG).show()
+    when (viewState.destination) {
+      Destination.BACK -> navigateToBack()
+      Destination.NEXT -> navigateToNext()
+      Destination.EXIT -> exit()
+      null -> Unit
+    }
     if (viewState.destination != null) {
       colorViewModel.onEvent(ViewEvent.ClearDestination)
     }
