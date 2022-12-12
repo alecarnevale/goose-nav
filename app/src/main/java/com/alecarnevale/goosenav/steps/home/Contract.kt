@@ -1,4 +1,4 @@
-package com.alecarnevale.goosenav.steps.main
+package com.alecarnevale.goosenav.steps.home
 
 data class ViewState(
   val gooseReady: Boolean,

@@ -1,4 +1,4 @@
-package com.alecarnevale.goosenav.steps.main
+package com.alecarnevale.goosenav.steps.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -11,13 +11,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun MainContent(
-  mainViewModel: MainViewModel = hiltViewModel(),
+fun HomeContent(
+  homeViewModel: HomeViewModel = hiltViewModel(),
   navigateToNext: () -> Unit
 ) {
-  val viewState by mainViewModel.viewState().collectAsState()
+  val viewState by homeViewModel.viewState().collectAsState()
   val onClickCreateButton =
-    remember(mainViewModel) { { mainViewModel.onEvent(ViewEvent.OnClickCreateButton) } }
+    remember(homeViewModel) { { homeViewModel.onEvent(ViewEvent.OnClickCreateButton) } }
 
   Body(
     gooseReady = viewState.gooseReady,
@@ -30,7 +30,7 @@ fun MainContent(
       null -> Unit
     }
     if (viewState.destination != null) {
-      mainViewModel.onEvent(ViewEvent.ClearDestination)
+      homeViewModel.onEvent(ViewEvent.ClearDestination)
     }
   }
 }

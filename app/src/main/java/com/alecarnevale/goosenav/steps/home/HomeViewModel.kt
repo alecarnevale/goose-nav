@@ -1,9 +1,7 @@
-package com.alecarnevale.goosenav.steps.main
+package com.alecarnevale.goosenav.steps.home
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.alecarnevale.goosenav.Goose
-import com.alecarnevale.goosenav.steps.summary.SummaryViewModelModule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,9 +9,9 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  @MainViewModelModule.GooseReady private val gooseReady: Boolean
+  @HomeViewModelModule.GooseReady private val gooseReady: Boolean
 ) : ViewModel() {
   private val viewStateFlow =
     MutableStateFlow(savedStateHandle[VIEW_STATE_KEY] ?: defaultViewState())

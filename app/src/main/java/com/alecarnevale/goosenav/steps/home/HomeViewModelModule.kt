@@ -1,4 +1,4 @@
-package com.alecarnevale.goosenav.steps.main
+package com.alecarnevale.goosenav.steps.home
 
 import com.alecarnevale.goosenav.steps.MainActivity
 import dagger.Module
@@ -9,7 +9,7 @@ import javax.inject.Qualifier
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object MainViewModelModule {
+object HomeViewModelModule {
   @Qualifier
   @Retention(AnnotationRetention.RUNTIME)
   annotation class GooseReady

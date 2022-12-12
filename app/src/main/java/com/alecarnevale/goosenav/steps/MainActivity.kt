@@ -10,9 +10,9 @@ import com.alecarnevale.goosenav.steps.color.colorScreen
 import com.alecarnevale.goosenav.steps.color.navigateToColor
 import com.alecarnevale.goosenav.steps.jumppower.jumpPowerScreen
 import com.alecarnevale.goosenav.steps.jumppower.navigateToJumpPower
-import com.alecarnevale.goosenav.steps.main.mainNavigationRoute
-import com.alecarnevale.goosenav.steps.main.mainScreen
-import com.alecarnevale.goosenav.steps.main.navigateToMain
+import com.alecarnevale.goosenav.steps.home.homeNavigationRoute
+import com.alecarnevale.goosenav.steps.home.homeScreen
+import com.alecarnevale.goosenav.steps.home.navigateToHome
 import com.alecarnevale.goosenav.steps.name.nameNavigationRoute
 import com.alecarnevale.goosenav.steps.name.nameScreen
 import com.alecarnevale.goosenav.steps.name.navigateToName
@@ -28,25 +28,25 @@ class MainActivity : ComponentActivity() {
       val navController = rememberNavController()
       NavHost(
         navController = navController,
-        startDestination = mainNavigationRoute
+        startDestination = homeNavigationRoute
       ) {
-        mainScreen(
+        homeScreen(
           navigateToNext = { navController.navigateToName() }
         )
         nameScreen(
           navigateToNext = { navController.navigateToColor() },
-          exit = { navController.navigateToMain() }
+          exit = { navController.navigateToHome() }
         )
         colorScreen(
           navigateToBack = { navController.popBackStack() },
           navigateToNext = { navController.navigateToJumpPower() },
-          exit = { navController.navigateToMain() }
+          exit = { navController.navigateToHome() }
         )
         jumpPowerScreen(
           navigateToBackBack = { navController.popBackStack(route = nameNavigationRoute, inclusive = false) },
           navigateToBack = { navController.popBackStack() },
           navigateToNext = { navController.navigateToSummary() },
-          exit = { navController.navigateToMain() }
+          exit = { navController.navigateToHome() }
         )
         summaryScreen()
       }
