@@ -29,6 +29,7 @@ fun NavGraphBuilder.summaryScreen(
     arguments = listOf(
       navArgument(EXTRA_SUMMARY_GOOSE_DATA) {
         type = GooseParamType()
+        nullable = false
       }
     )
   ) { backStackEntry ->
@@ -44,7 +45,7 @@ fun NavGraphBuilder.summaryScreen(
 }
 
 // TODO qualcuno ha detto KSP?
-class GooseParamType : NavType<Goose>(isNullableAllowed = false) {
+class GooseParamType : NavType<Goose>(isNullableAllowed = true) { // isNullableAllowed perché usato anche in HomeNavigation
   override fun get(bundle: Bundle, key: String): Goose? {
     return bundle.getParcelable(key)
   }

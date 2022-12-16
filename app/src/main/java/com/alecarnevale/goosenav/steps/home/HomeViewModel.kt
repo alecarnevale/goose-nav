@@ -11,13 +11,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-  savedStateHandle: SavedStateHandle
+  savedStateHandle: SavedStateHandle,
+  @HomeViewModelModule.HomeGooseData private val goose: Goose?
 ) : ViewModel() {
   private val viewStateFlow =
     MutableStateFlow(savedStateHandle[VIEW_STATE_KEY] ?: defaultViewState())
 
   private fun defaultViewState() = ViewState(
-    /*goose = goose,*/
+    goose = goose,
     destination = null
   )
 

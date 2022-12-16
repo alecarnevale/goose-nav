@@ -1,6 +1,9 @@
 package com.alecarnevale.goosenav.steps.home
 
+import com.alecarnevale.goosenav.Goose
+
 data class ViewState(
+  val goose: Goose?,
   val destination: Destination?
 )
 
