@@ -1,7 +1,7 @@
 package com.alecarnevale.goosenav.steps.summary
 
+import androidx.lifecycle.SavedStateHandle
 import com.alecarnevale.goosenav.Goose
-import com.alecarnevale.goosenav.steps.MainActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,10 +13,11 @@ import javax.inject.Qualifier
 object SummaryViewModelModule {
   @Qualifier
   @Retention(AnnotationRetention.RUNTIME)
-  annotation class GooseData
+  annotation class SummaryGooseData
 
   @Provides
-  @GooseData
-  // TODO temporary
-  fun goose(): Goose = requireNotNull(MainActivity.goose)
+  @SummaryGooseData
+  fun goose(savedStateHandle: SavedStateHandle): Goose = requireNotNull(
+    savedStateHandle.get<Goose>(EXTRA_SUMMARY_GOOSE_DATA)
+  )
 }

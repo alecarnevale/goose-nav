@@ -24,7 +24,7 @@ import com.alecarnevale.goosenav.steps.navbuttons.NavButtons
 fun ColorContent(
   colorViewModel: ColorViewModel = viewModel(),
   navigateToBack: () -> Unit,
-  navigateToNext: () -> Unit,
+  navigateToNext: (GooseColor) -> Unit,
   exit: () -> Unit
 ) {
   val viewState by colorViewModel.viewState().collectAsState()
@@ -55,9 +55,9 @@ fun ColorContent(
 
   LaunchedEffect(viewState.destination) {
     when (viewState.destination) {
-      Destination.BACK -> navigateToBack()
-      Destination.NEXT -> navigateToNext()
-      Destination.EXIT -> exit()
+      Destination.Back -> navigateToBack()
+      is Destination.Next -> navigateToNext(viewState.selectedColor)
+      Destination.Exit -> exit()
       null -> Unit
     }
     if (viewState.destination != null) {

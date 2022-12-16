@@ -1,5 +1,6 @@
 package com.alecarnevale.goosenav.steps.jumppower
 
+import androidx.lifecycle.SavedStateHandle
 import com.alecarnevale.goosenav.steps.MainActivity
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,7 @@ object JumpPowerViewModelModule {
 
   @Provides
   @JumpCounter
-  // TODO temporary
-  fun jumpCounter(): Int = MainActivity.jumpCounter
+  fun jumpCounter(savedStateHandle: SavedStateHandle): Int = requireNotNull(
+    savedStateHandle.get<Int>(EXTRA_JUMP_COUNTER)
+  )
 }

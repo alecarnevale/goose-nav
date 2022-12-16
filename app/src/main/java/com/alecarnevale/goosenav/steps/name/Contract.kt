@@ -8,12 +8,13 @@ data class ViewState(
 
 sealed class ViewEvent {
   data class OnChangeName(val name: String) : ViewEvent()
-  object ClearError: ViewEvent()
+  object ClearError : ViewEvent()
   object OnClickProceedButton : ViewEvent()
   object OnClickExitButton : ViewEvent()
   object ClearDestination : ViewEvent()
 }
 
-enum class Destination {
-  NEXT, EXIT
+sealed class Destination {
+  data class Next(val name: String) : Destination()
+  object Exit : Destination()
 }

@@ -16,7 +16,7 @@ import com.alecarnevale.goosenav.steps.navbuttons.NavButtons
 @Composable
 fun NameContent(
   nameViewModel: NameViewModel = viewModel(),
-  navigateToNext: () -> Unit,
+  navigateToNext: (String) -> Unit,
   exit: () -> Unit
 ) {
   val viewState by nameViewModel.viewState().collectAsState()
@@ -43,9 +43,9 @@ fun NameContent(
   )
 
   LaunchedEffect(viewState.destination) {
-    when (viewState.destination) {
-      Destination.NEXT -> navigateToNext()
-      Destination.EXIT -> exit()
+    when (val destination = viewState.destination) {
+      is Destination.Next -> navigateToNext(destination.name)
+      Destination.Exit -> exit()
       null -> Unit
     }
     if (viewState.destination != null) {

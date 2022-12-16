@@ -20,7 +20,6 @@ fun HomeContent(
     remember(homeViewModel) { { homeViewModel.onEvent(ViewEvent.OnClickCreateButton) } }
 
   Body(
-    gooseReady = viewState.gooseReady,
     onClickCreateButton = onClickCreateButton
   )
 
@@ -37,7 +36,6 @@ fun HomeContent(
 
 @Composable
 private fun Body(
-  gooseReady: Boolean,
   onClickCreateButton: () -> Unit
 ) {
   Column(
@@ -45,12 +43,7 @@ private fun Body(
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.SpaceEvenly
   ) {
-    val message = if (gooseReady) {
-      "La tua oca è pronta"
-    } else {
-      "Costruisci la tua oca"
-    }
-    Text(text = message)
+    Text(text = "La tua oca non è pronta")
     Spacer(modifier = Modifier.height(30.dp))
     Button(onClick = onClickCreateButton) {
       Text(text = "Costruisci la tua oca!")
@@ -61,5 +54,5 @@ private fun Body(
 @Preview(showBackground = true)
 @Composable
 private fun BodyPreview() {
-  Body(false, {})
+  Body({})
 }

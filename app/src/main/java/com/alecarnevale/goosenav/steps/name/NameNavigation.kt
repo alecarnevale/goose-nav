@@ -12,7 +12,7 @@ fun NavController.navigateToName(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.nameScreen(
-  navigateToNext: () -> Unit,
+  navigateToNext: (String) -> Unit,
   exit: () -> Unit
 ) {
   composable(route = nameNavigationRoute) {

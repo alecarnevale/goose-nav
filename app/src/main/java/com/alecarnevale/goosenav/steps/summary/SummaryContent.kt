@@ -1,22 +1,24 @@
 package com.alecarnevale.goosenav.steps.summary
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.alecarnevale.goosenav.Goose
 import com.alecarnevale.goosenav.GooseColor
 
 @Composable
 fun SummaryContent(
   summaryViewModel: SummaryViewModel = hiltViewModel(),
+  navigateToName: () -> Unit,
+  navigateToColor: () -> Unit,
+  navigateToJumpPower: () -> Unit,
+  confirmGoose: (Goose) -> Unit
 ) {
   val viewState by summaryViewModel.viewState().collectAsState()
   val onClickName =
@@ -38,10 +40,21 @@ fun SummaryContent(
     onClickFinish = onClickFinish,
   )
 
-  val context = LocalContext.current
   LaunchedEffect(viewState.destination) {
-    // TODO
-    Toast.makeText(context, viewState.destination?.name ?: "CLEAR", Toast.LENGTH_LONG).show()
+    when (viewState.destination) {
+      Destination.NAME -> navigateToName()
+      Destination.COLOR -> navigateToColor()
+      Destination.JUMP_POWER -> navigateToJumpPower()
+      Destination.EXIT -> {
+        val goose = Goose(
+          name = viewState.name,
+          color = viewState.color,
+          jumpPower = viewState.jumpPower
+        )
+        confirmGoose(goose)
+      }
+      null -> Unit
+    }
     if (viewState.destination != null) {
       summaryViewModel.onEvent(ViewEvent.ClearDestination)
     }

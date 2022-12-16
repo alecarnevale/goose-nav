@@ -50,11 +50,11 @@ class NameViewModel @Inject constructor(
       return
     }
 
-    viewStateFlow.update { it.copy(destination = Destination.NEXT) }
+    viewStateFlow.update { it.copy(destination = Destination.Next(name)) }
   }
 
   private fun onClickExitButton() {
-    viewStateFlow.update { it.copy(destination = Destination.EXIT) }
+    viewStateFlow.update { it.copy(destination = Destination.Exit) }
   }
 
   private fun clearDestination() {

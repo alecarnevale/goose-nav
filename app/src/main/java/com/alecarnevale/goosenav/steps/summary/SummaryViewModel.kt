@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SummaryViewModel @Inject constructor(
   savedStateHandle: SavedStateHandle,
-  @SummaryViewModelModule.GooseData private val goose: Goose
+  @SummaryViewModelModule.SummaryGooseData private val goose: Goose
 ) : ViewModel() {
   private val viewStateFlow =
     MutableStateFlow(savedStateHandle[VIEW_STATE_KEY] ?: defaultViewState())

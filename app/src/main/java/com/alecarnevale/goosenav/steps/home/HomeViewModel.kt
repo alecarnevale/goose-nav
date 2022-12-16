@@ -2,6 +2,7 @@ package com.alecarnevale.goosenav.steps.home
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.alecarnevale.goosenav.Goose
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,14 +11,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-  savedStateHandle: SavedStateHandle,
-  @HomeViewModelModule.GooseReady private val gooseReady: Boolean
+  savedStateHandle: SavedStateHandle
 ) : ViewModel() {
   private val viewStateFlow =
     MutableStateFlow(savedStateHandle[VIEW_STATE_KEY] ?: defaultViewState())
 
   private fun defaultViewState() = ViewState(
-    gooseReady = gooseReady,
+    /*goose = goose,*/
     destination = null
   )
 

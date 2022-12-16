@@ -38,15 +38,15 @@ class ColorViewModel @Inject constructor(
   }
 
   private fun onClickBackButton() {
-    viewStateFlow.update { it.copy(destination = Destination.BACK) }
+    viewStateFlow.update { it.copy(destination = Destination.Back) }
   }
 
   private fun onClickProceedButton() {
-    viewStateFlow.update { it.copy(destination = Destination.NEXT) }
+    viewStateFlow.update { it.copy(destination = Destination.Next(it.selectedColor)) }
   }
 
   private fun onClickExitButton() {
-    viewStateFlow.update { it.copy(destination = Destination.EXIT) }
+    viewStateFlow.update { it.copy(destination = Destination.Exit) }
   }
 
   private fun clearDestination() {

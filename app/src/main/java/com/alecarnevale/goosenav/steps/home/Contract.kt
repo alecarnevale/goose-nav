@@ -1,7 +1,6 @@
 package com.alecarnevale.goosenav.steps.home
 
 data class ViewState(
-  val gooseReady: Boolean,
   val destination: Destination?
 )
 

@@ -16,6 +16,8 @@ sealed class ViewEvent {
   object ClearDestination : ViewEvent()
 }
 
-enum class Destination {
-  BACK, NEXT, EXIT
+sealed class Destination {
+  object Back : Destination()
+  data class Next(val gooseColor: GooseColor) : Destination()
+  object Exit : Destination()
 }
