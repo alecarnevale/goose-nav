@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.navigation.*
 import androidx.navigation.compose.composable
 import com.alecarnevale.goosenav.Goose
+import com.alecarnevale.goosenav.steps.home.startDestination
 import com.google.gson.Gson
 
 const val EXTRA_SUMMARY_GOOSE_DATA = "extra_summary_goose_data"
@@ -13,8 +14,12 @@ private val gson = Gson()
 fun NavController.navigateToSummary(
   goose: Goose
 ) {
+  val navOptions = NavOptions
+    .Builder()
+    .setPopUpTo(route = startDestination, inclusive = false)
+    .build()
   val gooseJSON = gson.toJson(goose)
-  this.navigate("$summaryNavigationRoute/$gooseJSON", NavOptions.Builder().setLaunchSingleTop(true).build())
+  this.navigate("$summaryNavigationRoute/$gooseJSON", navOptions)
 }
 
 fun NavGraphBuilder.summaryScreen(

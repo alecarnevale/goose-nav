@@ -12,6 +12,9 @@ import com.google.gson.Gson
 
 const val EXTRA_HOME_GOOSE_DATA = "extra_home_goose_data"
 const val homeNavigationRoute = "home"
+const val startDestination = "$homeNavigationRoute?$EXTRA_HOME_GOOSE_DATA={$EXTRA_HOME_GOOSE_DATA}"
+// mi sarei aspettato funzionasse semplicemente
+// startDestination = homeNavigationRoute
 private val gson = Gson()
 
 fun NavController.navigateToHome(
@@ -24,7 +27,7 @@ fun NavController.navigateToHome(
     homeNavigationRoute
   }
   this.navigate(route) {
-    popUpTo(route) { inclusive = true }
+    popUpTo(startDestination) { inclusive = true }
   }
 }
 

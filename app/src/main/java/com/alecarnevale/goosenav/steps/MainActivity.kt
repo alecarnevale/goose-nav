@@ -10,10 +10,7 @@ import com.alecarnevale.goosenav.Goose
 import com.alecarnevale.goosenav.GooseColor
 import com.alecarnevale.goosenav.steps.color.colorScreen
 import com.alecarnevale.goosenav.steps.color.navigateToColor
-import com.alecarnevale.goosenav.steps.home.EXTRA_HOME_GOOSE_DATA
-import com.alecarnevale.goosenav.steps.home.homeNavigationRoute
-import com.alecarnevale.goosenav.steps.home.homeScreen
-import com.alecarnevale.goosenav.steps.home.navigateToHome
+import com.alecarnevale.goosenav.steps.home.*
 import com.alecarnevale.goosenav.steps.jumppower.jumpPowerScreen
 import com.alecarnevale.goosenav.steps.jumppower.navigateToJumpPower
 import com.alecarnevale.goosenav.steps.name.nameNavigationRoute
@@ -38,9 +35,7 @@ class MainActivity : ComponentActivity() {
       val navController = rememberNavController()
       NavHost(
         navController = navController,
-        startDestination = "$homeNavigationRoute?$EXTRA_HOME_GOOSE_DATA={$EXTRA_HOME_GOOSE_DATA}"
-        // mi sarei aspettato funzionasse semplicemente
-        // startDestination = homeNavigationRoute
+        startDestination = startDestination
       ) {
         homeScreen(
           navigateToNext = { navController.navigateTo(Destination.Name(false)) }
