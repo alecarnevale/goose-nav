@@ -11,11 +11,10 @@ const val summaryNavigationRoute = "summary"
 private val gson = Gson()
 
 fun NavController.navigateToSummary(
-  goose: Goose,
-  navOptions: NavOptions? = null
+  goose: Goose
 ) {
   val gooseJSON = gson.toJson(goose)
-  this.navigate("$summaryNavigationRoute/$gooseJSON", navOptions)
+  this.navigate("$summaryNavigationRoute/$gooseJSON", NavOptions.Builder().setLaunchSingleTop(true).build())
 }
 
 fun NavGraphBuilder.summaryScreen(

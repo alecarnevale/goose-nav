@@ -4,6 +4,7 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.Button
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
@@ -25,7 +26,8 @@ fun ColorContent(
   colorViewModel: ColorViewModel = viewModel(),
   navigateToBack: () -> Unit,
   navigateToNext: (GooseColor) -> Unit,
-  exit: () -> Unit
+  exit: () -> Unit,
+  finishOnEditingMode: ((GooseColor) -> Unit)?
 ) {
   val viewState by colorViewModel.viewState().collectAsState()
   val onSelectColor =
@@ -50,7 +52,8 @@ fun ColorContent(
     onSelectColor = onSelectColor,
     onBack = onBack,
     onProceed = onProceed,
-    onExit = onExit
+    onExit = onExit,
+    finishOnEditingMode = finishOnEditingMode
   )
 
   LaunchedEffect(viewState.destination) {
@@ -73,7 +76,8 @@ private fun Body(
   onSelectColor: (GooseColor) -> Unit,
   onBack: () -> Unit,
   onProceed: () -> Unit,
-  onExit: () -> Unit
+  onExit: () -> Unit,
+  finishOnEditingMode: ((GooseColor) -> Unit)?
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -84,12 +88,20 @@ private fun Body(
     Spacer(modifier = Modifier.height(30.dp))
     SelectionMenu(colors = colors, selectedColor = selectedColor, onSelectColor = onSelectColor)
     Spacer(modifier = Modifier.height(30.dp))
-    NavButtons(
-      onDoubleBack = null,
-      onBack = onBack,
-      onProceed = onProceed,
-      onExit = onExit
-    )
+    if (finishOnEditingMode == null) {
+      NavButtons(
+        onDoubleBack = null,
+        onBack = onBack,
+        onProceed = onProceed,
+        onExit = onExit
+      )
+    } else {
+      Button(
+        onClick = { finishOnEditingMode(selectedColor) }
+      ) {
+        Text(text = "OK")
+      }
+    }
   }
 }
 
@@ -131,5 +143,11 @@ private fun SelectionMenu(
 @Preview
 @Composable
 private fun BodyPreview() {
-  Body(emptyList(), GooseColor.BLACK, {}, {}, {}, {})
+  Body(emptyList(), GooseColor.BLACK, {}, {}, {}, {}, null)
+}
+
+@Preview
+@Composable
+private fun BodyPreviewEditingMode() {
+  Body(emptyList(), GooseColor.BLACK, {}, {}, {}, {}, {})
 }

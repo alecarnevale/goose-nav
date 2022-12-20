@@ -8,14 +8,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.alecarnevale.goosenav.Goose
 import com.alecarnevale.goosenav.GooseColor
-import com.alecarnevale.goosenav.steps.color.colorNavigationRoute
 import com.alecarnevale.goosenav.steps.color.colorScreen
 import com.alecarnevale.goosenav.steps.color.navigateToColor
 import com.alecarnevale.goosenav.steps.home.EXTRA_HOME_GOOSE_DATA
 import com.alecarnevale.goosenav.steps.home.homeNavigationRoute
 import com.alecarnevale.goosenav.steps.home.homeScreen
 import com.alecarnevale.goosenav.steps.home.navigateToHome
-import com.alecarnevale.goosenav.steps.jumppower.jumpPowerNavigationRoute
 import com.alecarnevale.goosenav.steps.jumppower.jumpPowerScreen
 import com.alecarnevale.goosenav.steps.jumppower.navigateToJumpPower
 import com.alecarnevale.goosenav.steps.name.nameNavigationRoute
@@ -45,14 +43,18 @@ class MainActivity : ComponentActivity() {
         // startDestination = homeNavigationRoute
       ) {
         homeScreen(
-          navigateToNext = { navController.navigateTo(Destination.NAME) }
+          navigateToNext = { navController.navigateTo(Destination.Name(false)) }
         )
         nameScreen(
           navigateToNext = {
             name = it
-            navController.navigateTo(Destination.COLOR)
+            navController.navigateTo(Destination.Color(false))
           },
-          exit = { navController.navigateTo(Destination.HOME) }
+          exit = { navController.navigateTo(Destination.Home) },
+          finishOnEditingMode = {
+            name = it
+            navController.navigateTo(Destination.Summary)
+          }
         )
         colorScreen(
           navigateToBack = {
@@ -61,9 +63,13 @@ class MainActivity : ComponentActivity() {
           },
           navigateToNext = {
             color = it
-            navController.navigateTo(Destination.JUMP_POWER)
+            navController.navigateTo(Destination.JumpPower(false))
           },
-          exit = { navController.navigateTo(Destination.HOME) }
+          exit = { navController.navigateTo(Destination.Home) },
+          finishOnEditingMode = {
+            color = it
+            navController.navigateTo(Destination.Summary)
+          }
         )
         jumpPowerScreen(
           navigateToBackBack = {
@@ -74,27 +80,23 @@ class MainActivity : ComponentActivity() {
             updateJumpCounter()
             navController.popBackStack()
           },
-          navigateToNext = { navController.navigateTo(Destination.SUMMARY) },
-          exit = { navController.navigateTo(Destination.HOME) }
+          navigateToNext = { navController.navigateTo(Destination.Summary) },
+          exit = { navController.navigateTo(Destination.Home) },
+          finishOnEditingMode = { navController.navigateTo(Destination.Summary) }
         )
         summaryScreen(
           navigateToName = {
-            updateJumpCounter()
-            navController.popBackStack(route = nameNavigationRoute, inclusive = false)
+            navController.navigateTo(Destination.Name(true))
           },
           navigateToColor = {
-            updateJumpCounter()
-            navController.popBackStack(route = colorNavigationRoute, inclusive = false)
+            navController.navigateTo(Destination.Color(true))
           },
           navigateToJumpPower = {
-            updateJumpCounter()
-            navController.popBackStack()
-            // questa stranamente non funziona
-            // navController.popBackStack(route = jumpPowerNavigationRoute, inclusive = false)
+            navController.navigateTo(Destination.JumpPower(true))
           },
           confirmGoose = {
             confirmedGoose = it
-            navController.navigateTo(Destination.HOME)
+            navController.navigateTo(Destination.Home)
           }
         )
       }
@@ -103,11 +105,14 @@ class MainActivity : ComponentActivity() {
 
   private fun NavController.navigateTo(destination: Destination) {
     return when (destination) {
-      Destination.HOME -> navigateToHome(confirmedGoose).also { clearJumpCounter() }
-      Destination.NAME -> navigateToName()
-      Destination.COLOR -> navigateToColor()
-      Destination.JUMP_POWER -> navigateToJumpPower(jumpCounter)
-      Destination.SUMMARY -> navigateToSummary(
+      Destination.Home -> navigateToHome(confirmedGoose).also { clearJumpCounter() }
+      is Destination.Name -> navigateToName(destination.isEditingMode)
+      is Destination.Color -> navigateToColor(destination.isEditingMode)
+      is Destination.JumpPower -> navigateToJumpPower(
+        jumpCounter = jumpCounter,
+        isEditingMode = destination.isEditingMode
+      )
+      Destination.Summary -> navigateToSummary(
         Goose(
           name = name,
           color = color,
@@ -125,11 +130,11 @@ class MainActivity : ComponentActivity() {
     jumpCounter += 1
   }
 
-  private enum class Destination {
-    HOME,
-    NAME,
-    COLOR,
-    JUMP_POWER,
-    SUMMARY
+  private sealed class Destination {
+    object Home: Destination()
+    data class Name(val isEditingMode: Boolean): Destination()
+    data class Color(val isEditingMode: Boolean): Destination()
+    data class JumpPower(val isEditingMode: Boolean): Destination()
+    object Summary: Destination()
   }
 }

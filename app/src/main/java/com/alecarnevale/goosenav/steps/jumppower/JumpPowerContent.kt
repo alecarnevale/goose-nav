@@ -2,6 +2,7 @@ package com.alecarnevale.goosenav.steps.jumppower
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,7 +24,8 @@ fun JumpPowerContent(
   navigateToBackBack: () -> Unit,
   navigateToBack: () -> Unit,
   navigateToNext: () -> Unit,
-  exit: () -> Unit
+  exit: () -> Unit,
+  finishOnEditingMode: (() -> Unit)?
 ) {
   val viewState by jumpViewModel.viewState().collectAsState()
   val onDoubleBack =
@@ -39,7 +41,8 @@ fun JumpPowerContent(
     onDoubleBack = onDoubleBack,
     onBack = onBack,
     onProceed = onProceed,
-    onExit = onExit
+    onExit = onExit,
+    finishOnEditingMode = finishOnEditingMode
   )
 
   LaunchedEffect(viewState.destination) {
@@ -62,7 +65,8 @@ private fun Body(
   onDoubleBack: () -> Unit,
   onBack: () -> Unit,
   onProceed: () -> Unit,
-  onExit: () -> Unit
+  onExit: () -> Unit,
+  finishOnEditingMode: (() -> Unit)?
 ) {
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -79,17 +83,31 @@ private fun Body(
     }
     Text(annotatedString)
     Spacer(modifier = Modifier.height(30.dp))
-    NavButtons(
-      onDoubleBack = onDoubleBack,
-      onBack = onBack,
-      onProceed = onProceed,
-      onExit = onExit
-    )
+    if (finishOnEditingMode == null) {
+      NavButtons(
+        onDoubleBack = onDoubleBack,
+        onBack = onBack,
+        onProceed = onProceed,
+        onExit = onExit
+      )
+    } else {
+      Button(
+        onClick = { finishOnEditingMode() }
+      ) {
+        Text(text = "OK")
+      }
+    }
   }
 }
 
 @Preview
 @Composable
 private fun BodyPreview() {
-  Body(0, {}, {}, {}, {})
+  Body(0, {}, {}, {}, {}, null)
+}
+
+@Preview
+@Composable
+private fun BodyPreviewEditingMode() {
+  Body(0, {}, {}, {}, {}, {})
 }
