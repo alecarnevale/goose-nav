@@ -10,7 +10,6 @@ The good:
 - `hiltViewModel()` + `backStackEntry.savedStateHandle`
 
 The bad:
-- `navController.popBackStack(route = routeId)`, doesn't work if route is the previous one
 - custom `NavType<T>` to marshal/unmarshal
 
 The ugly:
