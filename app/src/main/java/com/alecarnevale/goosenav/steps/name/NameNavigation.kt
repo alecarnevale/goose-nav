@@ -4,12 +4,13 @@ import androidx.navigation.*
 import androidx.navigation.compose.composable
 
 private const val EXTRA_IS_EDITING_MODE = "extra_is_editing_mode"
-const val nameNavigationRoute = "name"
+private const val _nameNavigationRoute = "name"
+const val nameNavigationRoute = "$_nameNavigationRoute/{$EXTRA_IS_EDITING_MODE}"
 
 fun NavController.navigateToName(
   isEditingMode: Boolean
 ) {
-  this.navigate("$nameNavigationRoute/$isEditingMode")
+  this.navigate("$_nameNavigationRoute/$isEditingMode")
 }
 
 fun NavGraphBuilder.nameScreen(
@@ -18,7 +19,7 @@ fun NavGraphBuilder.nameScreen(
   finishOnEditingMode: (String) -> Unit
 ) {
   composable(
-    route = "$nameNavigationRoute/{$EXTRA_IS_EDITING_MODE}",
+    route = nameNavigationRoute,
     arguments = listOf(
       navArgument(EXTRA_IS_EDITING_MODE) {
         type = NavType.BoolType
