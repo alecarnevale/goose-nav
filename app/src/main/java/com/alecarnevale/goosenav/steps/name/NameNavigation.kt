@@ -3,7 +3,7 @@ package com.alecarnevale.goosenav.steps.name
 import androidx.navigation.*
 import androidx.navigation.compose.composable
 
-private const val EXTRA_IS_EDITING_MODE = "extra_is_editing_mode"
+const val EXTRA_IS_EDITING_MODE = "extra_is_editing_mode"
 private const val _nameNavigationRoute = "name"
 const val nameNavigationRoute = "$_nameNavigationRoute/{$EXTRA_IS_EDITING_MODE}"
 

@@ -17,7 +17,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.alecarnevale.goosenav.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -42,10 +42,15 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.1.1'
     }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+    testOptions {
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging true
+            }
         }
+    }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
     }
 }
 
@@ -73,4 +78,11 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     implementation 'com.google.code.gson:gson:2.10'
+
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.44'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.44'
+    androidTestImplementation "io.mockk:mockk-android:1.12.3"
+
+    androidTestImplementation "androidx.navigation:navigation-testing:2.5.3"
+
 }
