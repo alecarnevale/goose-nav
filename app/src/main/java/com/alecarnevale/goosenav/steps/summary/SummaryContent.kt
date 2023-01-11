@@ -77,6 +77,9 @@ private fun Body(
     verticalArrangement = Arrangement.Center
   ) {
 
+    Text("Una superoca è pronta a scendere in campo")
+    Spacer(modifier = Modifier.height(30.dp))
+
     Stat(name = "Nome", value = name, onClick = onClickName)
     Spacer(modifier = Modifier.height(15.dp))
     Stat(name = "Colore", value = color.name, onClick = onClickColor)

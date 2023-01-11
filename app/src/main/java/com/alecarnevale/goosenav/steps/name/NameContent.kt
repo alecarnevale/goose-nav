@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -72,7 +73,7 @@ private fun Body(
   ) {
     Text("Come si chiama l'oca?")
     Spacer(modifier = Modifier.height(30.dp))
-    TextField(value = name.orEmpty(), onValueChange = onChangeName)
+    TextField(value = name.orEmpty(), onValueChange = onChangeName, modifier = Modifier.testTag(TAG_FIELD_NAME))
     if (nameError != null) {
       Spacer(modifier = Modifier.height(10.dp))
       Text(nameError, color = Color.Red)
@@ -94,6 +95,8 @@ private fun Body(
     }
   }
 }
+
+const val TAG_FIELD_NAME = "tag_field_name"
 
 @Preview
 @Composable

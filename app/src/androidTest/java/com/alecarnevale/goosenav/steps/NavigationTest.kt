@@ -2,16 +2,16 @@ package com.alecarnevale.goosenav.steps
 
 import android.os.Bundle
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.alecarnevale.goosenav.Goose
 import com.alecarnevale.goosenav.GooseColor
 import com.alecarnevale.goosenav.steps.name.EXTRA_IS_EDITING_MODE
+import com.alecarnevale.goosenav.steps.name.TAG_FIELD_NAME
 import com.alecarnevale.goosenav.steps.name.nameNavigationRoute
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -91,5 +91,82 @@ class MainNavTest {
     composeTestRule.onNodeWithText("Come si chiama l'oca?").assertIsDisplayed()
     composeTestRule.onNodeWithText("Avanti").assertDoesNotExist()
     composeTestRule.onNodeWithText("OK").assertIsDisplayed()
+  }
+
+  @Test
+  fun complete_Navigation() {
+    // looks like an integration tests
+    // però non lo è effettivamente perché le callback di update settate nel before sono fake
+    // l'intenzione qui è di testare la navigazione, non la validità dei dati
+
+    // start
+    composeTestRule.onNodeWithText("La tua oca non è pronta").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Costruisci la tua oca!").performClick()
+
+    // name
+    composeTestRule.onNodeWithTag(TAG_FIELD_NAME).performTextInput("camilla")
+    composeTestRule.onNodeWithText("Avanti").performClick()
+
+    // color
+    composeTestRule.onNodeWithText("Di che colore è l'oca?").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Avanti").performClick()
+
+    // jump power
+    composeTestRule.onNodeWithText("La tua oca è in grado di saltare").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Indietro").performClick()
+
+    // color
+    composeTestRule.onNodeWithText("Di che colore è l'oca?").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Avanti").performClick()
+
+    // jump power
+    composeTestRule.onNodeWithText("La tua oca è in grado di saltare").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Avanti").performClick()
+
+    // summary, back stack cleared
+    composeTestRule.onNodeWithText("0").performClick()
+
+    // jump power edit mode
+    composeTestRule.onNodeWithText("La tua oca è in grado di saltare").assertIsDisplayed()
+    composeTestRule.onNodeWithText("OK").performClick()
+
+    // summary
+    composeTestRule.onNodeWithText("Una superoca è pronta a scendere in campo").assertIsDisplayed()
+    composeTestRule.onNodeWithText("OK").performClick()
+
+    // home
+    composeTestRule.onNodeWithText("La tua oca non è pronta").assertIsDisplayed()
+  }
+
+  @Test
+  fun onSummary_backStackCleared() {
+    // start
+    composeTestRule.onNodeWithText("La tua oca non è pronta").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Costruisci la tua oca!").performClick()
+
+    // name
+    composeTestRule.onNodeWithTag(TAG_FIELD_NAME).performTextInput("camilla")
+    composeTestRule.onNodeWithText("Avanti").performClick()
+
+    // color
+    composeTestRule.onNodeWithText("Di che colore è l'oca?").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Avanti").performClick()
+
+    // jump power
+    composeTestRule.onNodeWithText("La tua oca è in grado di saltare").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Indietro").performClick()
+
+    // color
+    composeTestRule.onNodeWithText("Di che colore è l'oca?").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Avanti").performClick()
+
+    // jump power
+    composeTestRule.onNodeWithText("La tua oca è in grado di saltare").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Avanti").performClick()
+
+    // summary, back stack cleared
+    composeTestRule.onNodeWithText("Una superoca è pronta a scendere in campo").assertIsDisplayed()
+    pressBack()
+    composeTestRule.onNodeWithText("La tua oca non è pronta").assertIsDisplayed()
   }
 }
