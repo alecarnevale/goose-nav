@@ -72,6 +72,7 @@ fun MainNav(
     )
     jumpPowerScreen(
       navigateToBackBack = {
+        // comodo
         navController.popBackStack(route = nameNavigationRoute, inclusive = false)
       },
       navigateToBack = {

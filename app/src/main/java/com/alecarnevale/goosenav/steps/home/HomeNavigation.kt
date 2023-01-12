@@ -34,10 +34,12 @@ fun NavController.navigateToHome(
 fun NavGraphBuilder.homeScreen(
   navigateToNext: () -> Unit
 ) {
+  // optional nav argument
   val route = "$homeNavigationRoute?$EXTRA_HOME_GOOSE_DATA={$EXTRA_HOME_GOOSE_DATA}"
   val arguments = listOf(
     navArgument(EXTRA_HOME_GOOSE_DATA) {
       type = GooseParamType()
+      // richiesto o nullable, o default value
       nullable = true
     }
   )

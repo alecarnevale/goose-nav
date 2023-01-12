@@ -14,6 +14,7 @@ private val gson = Gson()
 fun NavController.navigateToSummary(
   goose: Goose
 ) {
+  // non male, ogni volta che navigo alla summary sono sicuro di ripulire fino alla start destination
   val navOptions = NavOptions
     .Builder()
     .setPopUpTo(route = startDestination, inclusive = false)
@@ -32,11 +33,15 @@ fun NavGraphBuilder.summaryScreen(
     route = "$summaryNavigationRoute/{${EXTRA_SUMMARY_GOOSE_DATA}}",
     arguments = listOf(
       navArgument(EXTRA_SUMMARY_GOOSE_DATA) {
+        // praticamente sto buttando in input l'oggetto sottoforma di stringa (json)
+        // e sto dicendo che in output riceverò l'oggetto ricostruito (getParcelable<Goose>)
+        // solo perché sto mascherando il parsing dietro un custom NavType
         type = GooseParamType()
         nullable = false
       }
     )
   ) { backStackEntry ->
+    // sarebbe stato top se questo getParcelable<Goose> non avesse richiesto il marshall/unmarshall dell'oggetto
     val goose = backStackEntry.arguments?.getParcelable<Goose>(EXTRA_SUMMARY_GOOSE_DATA)
     backStackEntry.savedStateHandle[EXTRA_SUMMARY_GOOSE_DATA] = goose
     SummaryContent(
